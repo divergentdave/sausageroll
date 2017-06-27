@@ -478,8 +478,10 @@ level = Level(
 def main():
     print(level.draw_level())
     print(level.draw_state(level.initial_state))
+    import time
     for step in level.solve():
         print(level.draw_state(step))
+        time.sleep(0.5)
 
 
 if __name__ == "__main__":
