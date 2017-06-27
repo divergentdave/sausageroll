@@ -462,8 +462,10 @@ level = Level(
 def main():
     print(level.draw_level())
     print(level.draw_state(level.initial_state))
+    print(level.initial_state)
     for step in level.solve():
         print(level.draw_state(step))
+        print(step)
 
 
 if __name__ == "__main__":
