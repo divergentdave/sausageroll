@@ -181,10 +181,14 @@ class Level:
         print("Failed")
 
     def neighbors(self, state):
-        old_pos = state.player_state.pos
+        yield from self.move_up(state)
+        yield from self.move_down(state)
+        yield from self.move_left(state)
+        yield from self.move_right(state)
 
-        # Up
+    def move_up(self, state):
         pushes = []
+        old_pos = state.player_state.pos
         if state.player_state.direction == Direction.UP:  # move forward
             next_dir = Direction.UP
             next_pos = (old_pos[0], old_pos[1] + 1)
@@ -219,8 +223,9 @@ class Level:
             next_pos = old_pos
         yield from self.process_pushes(state, next_pos, next_dir, pushes)
 
-        # Down
+    def move_down(self, state):
         pushes = []
+        old_pos = state.player_state.pos
         if state.player_state.direction == Direction.UP:  # move backward
             next_dir = Direction.UP
             next_pos = (old_pos[0], old_pos[1] + 1)
@@ -255,8 +260,9 @@ class Level:
             next_pos = old_pos
         yield from self.process_pushes(state, next_pos, next_dir, pushes)
 
-        # Left
+    def move_left(self, state):
         pushes = []
+        old_pos = state.player_state.pos
         if state.player_state.direction == Direction.UP:  # turn right
             next_dir = Direction.LEFT
             pushes.append(((old_pos[0] - 1, old_pos[1] + 1), (0, 1)))
@@ -291,8 +297,9 @@ class Level:
                 next_pos = old_pos
         yield from self.process_pushes(state, next_pos, next_dir, pushes)
 
-        # Right
+    def move_right(self, state):
         pushes = []
+        old_pos = state.player_state.pos
         if state.player_state.direction == Direction.UP:  # turn left
             next_dir = Direction.RIGHT
             pushes.append(((old_pos[1] + 1, old_pos[1] + 1), (0, 1)))
