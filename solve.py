@@ -202,32 +202,6 @@ class Level:
                 next_pos = old_pos
         elif state.player_state.direction == Direction.DOWN:  # move backward
             next_dir = Direction.DOWN
-            next_pos = (old_pos[0], old_pos[1] - 1)
-            next_tile = self.tiles[next_pos[0]][next_pos[1]]
-            if next_tile == Tile.WATER:
-                next_pos = old_pos
-            elif next_tile == Tile.LAND:
-                pushes.append(((old_pos[0], old_pos[1] - 1), (0, -1)))
-            elif next_tile == Tile.GRILL:
-                pushes.append(((old_pos[0], old_pos[1] - 1), (0, -1)))
-                next_pos = old_pos
-        elif state.player_state.direction == Direction.LEFT:  # turn left
-            next_dir = Direction.UP
-            pushes.append(((old_pos[0] - 1, old_pos[1] + 1), (-1, 0)))
-            pushes.append(((old_pos[0] - 1, old_pos[1]), (0, -1)))
-            next_pos = old_pos
-        elif state.player_state.direction == Direction.RIGHT:  # turn right
-            next_dir = Direction.UP
-            pushes.append(((old_pos[0] + 1, old_pos[1] + 1), (1, 0)))
-            pushes.append(((old_pos[0] + 1, old_pos[1]), (0, -1)))
-            next_pos = old_pos
-        yield from self.process_pushes(state, next_pos, next_dir, pushes)
-
-    def move_down(self, state):
-        pushes = []
-        old_pos = state.player_state.pos
-        if state.player_state.direction == Direction.UP:  # move backward
-            next_dir = Direction.UP
             next_pos = (old_pos[0], old_pos[1] + 1)
             next_tile = self.tiles[next_pos[0]][next_pos[1]]
             if next_tile == Tile.WATER:
@@ -236,6 +210,32 @@ class Level:
                 pushes.append(((old_pos[0], old_pos[1] + 1), (0, 1)))
             elif next_tile == Tile.GRILL:
                 pushes.append(((old_pos[0], old_pos[1] + 1), (0, 1)))
+                next_pos = old_pos
+        elif state.player_state.direction == Direction.LEFT:  # turn
+            next_dir = Direction.UP
+            pushes.append(((old_pos[0] - 1, old_pos[1] + 1), (0, 1)))
+            pushes.append(((old_pos[0], old_pos[1] + 1), (1, 0)))
+            next_pos = old_pos
+        elif state.player_state.direction == Direction.RIGHT:  # turn
+            next_dir = Direction.UP
+            pushes.append(((old_pos[0] + 1, old_pos[1] + 1), (0, 1)))
+            pushes.append(((old_pos[0], old_pos[1] + 1), (-1, 0)))
+            next_pos = old_pos
+        yield from self.process_pushes(state, next_pos, next_dir, pushes)
+
+    def move_down(self, state):
+        pushes = []
+        old_pos = state.player_state.pos
+        if state.player_state.direction == Direction.UP:  # move backward
+            next_dir = Direction.UP
+            next_pos = (old_pos[0], old_pos[1] - 1)
+            next_tile = self.tiles[next_pos[0]][next_pos[1]]
+            if next_tile == Tile.WATER:
+                next_pos = old_pos
+            elif next_tile == Tile.LAND:
+                pushes.append(((old_pos[0], old_pos[1] - 1), (0, -1)))
+            elif next_tile == Tile.GRILL:
+                pushes.append(((old_pos[0], old_pos[1] - 1), (0, -1)))
                 next_pos = old_pos
         elif state.player_state.direction == Direction.DOWN:  # move forward
             next_dir = Direction.DOWN
@@ -248,30 +248,30 @@ class Level:
             elif next_tile == Tile.GRILL:
                 pushes.append(((old_pos[0], old_pos[1] - 2), (0, -1)))
                 next_pos = old_pos
-        elif state.player_state.direction == Direction.LEFT:  # turn right
+        elif state.player_state.direction == Direction.LEFT:  # turn
             next_dir = Direction.DOWN
-            pushes.append(((old_pos[0] - 1, old_pos[1] - 1), (-1, 0)))
-            pushes.append(((old_pos[0] - 1, old_pos[1]), (0, 1)))
+            pushes.append(((old_pos[0] - 1, old_pos[1] - 1), (0, -1)))
+            pushes.append(((old_pos[0], old_pos[1] - 1), (1, 0)))
             next_pos = old_pos
-        elif state.player_state.direction == Direction.RIGHT:  # turn left
+        elif state.player_state.direction == Direction.RIGHT:  # turn
             next_dir = Direction.DOWN
-            pushes.append(((old_pos[0] + 1, old_pos[1] - 1), (1, 0)))
-            pushes.append(((old_pos[0] + 1, old_pos[1]), (0, 1)))
+            pushes.append(((old_pos[0] + 1, old_pos[1] - 1), (0, -1)))
+            pushes.append(((old_pos[0], old_pos[1] - 1), (-1, 0)))
             next_pos = old_pos
         yield from self.process_pushes(state, next_pos, next_dir, pushes)
 
     def move_left(self, state):
         pushes = []
         old_pos = state.player_state.pos
-        if state.player_state.direction == Direction.UP:  # turn right
+        if state.player_state.direction == Direction.UP:  # turn
             next_dir = Direction.LEFT
-            pushes.append(((old_pos[0] - 1, old_pos[1] + 1), (0, 1)))
-            pushes.append(((old_pos[0], old_pos[1] + 1), (1, 0)))
+            pushes.append(((old_pos[0] - 1, old_pos[1] + 1), (-1, 0)))
+            pushes.append(((old_pos[0] - 1, old_pos[1]), (0, -1)))
             next_pos = old_pos
-        elif state.player_state.direction == Direction.DOWN:  # turn left
+        elif state.player_state.direction == Direction.DOWN:  # turn
             next_dir = Direction.LEFT
-            pushes.append(((old_pos[0] - 1, old_pos[1] - 1), (0, -1)))
-            pushes.append(((old_pos[0], old_pos[1] - 1), (1, 0)))
+            pushes.append(((old_pos[0] - 1, old_pos[1] - 1), (-1, 0)))
+            pushes.append(((old_pos[0] - 1, old_pos[1]), (0, 1)))
             next_pos = old_pos
         elif state.player_state.direction == Direction.LEFT:  # move forward
             next_dir = Direction.LEFT
@@ -286,32 +286,6 @@ class Level:
                 next_pos = old_pos
         elif state.player_state.direction == Direction.RIGHT:  # move backward
             next_dir = Direction.RIGHT
-            next_pos = (old_pos[0] + 1, old_pos[1])
-            next_tile = self.tiles[next_pos[0]][next_pos[1]]
-            if next_tile == Tile.WATER:
-                next_pos = old_pos
-            elif next_tile == Tile.LAND:
-                pushes.append(((old_pos[0] + 1, old_pos[1]), (1, 0)))
-            elif next_tile == Tile.GRILL:
-                pushes.append(((old_pos[0] + 1, old_pos[1]), (1, 0)))
-                next_pos = old_pos
-        yield from self.process_pushes(state, next_pos, next_dir, pushes)
-
-    def move_right(self, state):
-        pushes = []
-        old_pos = state.player_state.pos
-        if state.player_state.direction == Direction.UP:  # turn left
-            next_dir = Direction.RIGHT
-            pushes.append(((old_pos[1] + 1, old_pos[1] + 1), (0, 1)))
-            pushes.append(((old_pos[1], old_pos[1] + 1), (-1, 0)))
-            next_pos = old_pos
-        elif state.player_state.direction == Direction.DOWN:  # turn right
-            next_dir = Direction.RIGHT
-            pushes.append(((old_pos[1] + 1, old_pos[1] - 1), (0, -1)))
-            pushes.append(((old_pos[1], old_pos[1] - 1), (-1, 0)))
-            next_pos = old_pos
-        elif state.player_state.direction == Direction.LEFT:  # move backward
-            next_dir = Direction.LEFT
             next_pos = (old_pos[0] - 1, old_pos[1])
             next_tile = self.tiles[next_pos[0]][next_pos[1]]
             if next_tile == Tile.WATER:
@@ -320,6 +294,32 @@ class Level:
                 pushes.append(((old_pos[0] - 1, old_pos[1]), (-1, 0)))
             elif next_tile == Tile.GRILL:
                 pushes.append(((old_pos[0] - 1, old_pos[1]), (-1, 0)))
+                next_pos = old_pos
+        yield from self.process_pushes(state, next_pos, next_dir, pushes)
+
+    def move_right(self, state):
+        pushes = []
+        old_pos = state.player_state.pos
+        if state.player_state.direction == Direction.UP:  # turn
+            next_dir = Direction.RIGHT
+            pushes.append(((old_pos[0] + 1, old_pos[1] + 1), (1, 0)))
+            pushes.append(((old_pos[0] + 1, old_pos[1]), (0, -1)))
+            next_pos = old_pos
+        elif state.player_state.direction == Direction.DOWN:  # turn
+            pushes.append(((old_pos[0] + 1, old_pos[1] - 1), (1, 0)))
+            pushes.append(((old_pos[0] + 1, old_pos[1]), (0, 1)))
+            next_dir = Direction.RIGHT
+            next_pos = old_pos
+        elif state.player_state.direction == Direction.LEFT:  # move backward
+            next_dir = Direction.LEFT
+            next_pos = (old_pos[0] + 1, old_pos[1])
+            next_tile = self.tiles[next_pos[0]][next_pos[1]]
+            if next_tile == Tile.WATER:
+                next_pos = old_pos
+            elif next_tile == Tile.LAND:
+                pushes.append(((old_pos[0] + 1, old_pos[1]), (1, 0)))
+            elif next_tile == Tile.GRILL:
+                pushes.append(((old_pos[0] + 1, old_pos[1]), (1, 0)))
                 next_pos = old_pos
         elif state.player_state.direction == Direction.RIGHT:  # move forward
             next_dir = Direction.RIGHT
@@ -389,12 +389,20 @@ class Level:
                         newgb2 = sausage.grilled_top_2
                         newgt1 = sausage.grilled_bottom_1
                         newgt2 = sausage.grilled_bottom_2
-                    if self.tiles[sx][sy] == Tile.GRILL:
+                    if (sx >= 0 and
+                            sy >= 0 and
+                            sx < len(self.tiles) and
+                            sy < len(self.tiles[0]) and
+                            self.tiles[sx][sy] == Tile.GRILL):
                         if newgb1:
                             burned = True
                             break
                         newgb1 = True
-                    if self.tiles[sx + 1][sy] == Tile.GRILL:
+                    if (sx >= 0 and
+                            sy >= 0 and
+                            sx + 1 < len(self.tiles) and
+                            sy < len(self.tiles[0]) and
+                            self.tiles[sx + 1][sy] == Tile.GRILL):
                         if newgb2:
                             burned = True
                             break
@@ -410,12 +418,20 @@ class Level:
                         newgb2 = sausage.grilled_top_2
                         newgt1 = sausage.grilled_bottom_1
                         newgt2 = sausage.grilled_bottom_2
-                    if self.tiles[sx][sy] == Tile.GRILL:
+                    if (sx >= 0 and
+                            sy >= 0 and
+                            sx < len(self.tiles) and
+                            sy < len(self.tiles[0]) and
+                            self.tiles[sx][sy] == Tile.GRILL):
                         if newgb1:
                             burned = True
                             break
                         newgb1 = True
-                    if self.tiles[sx][sy + 1] == Tile.GRILL:
+                    if (sx >= 0 and
+                            sy >= 0 and
+                            sx < len(self.tiles) and
+                            sy + 1 < len(self.tiles[0]) and
+                            self.tiles[sx][sy + 1] == Tile.GRILL):
                         if newgb2:
                             burned = True
                             break
@@ -462,10 +478,8 @@ level = Level(
 def main():
     print(level.draw_level())
     print(level.draw_state(level.initial_state))
-    print(level.initial_state)
     for step in level.solve():
         print(level.draw_state(step))
-        print(step)
 
 
 if __name__ == "__main__":
