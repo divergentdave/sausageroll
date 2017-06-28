@@ -66,6 +66,17 @@ class Level:
             tuple(initial_sausages)
         )
 
+    def get_tile(self, x, y):
+        if x < 0:
+            return Tile.WATER
+        if y < 0:
+            return Tile.WATER
+        if x >= len(self.tiles):
+            return Tile.WATER
+        if y >= len(self.tiles[0]):
+            return Tile.WATER
+        return self.tiles[x][y]
+
     def draw_level(self):
         return "\n".join(
             "".join(
@@ -388,20 +399,12 @@ class Level:
                         newgb2 = sausage.grilled_top_2
                         newgt1 = sausage.grilled_bottom_1
                         newgt2 = sausage.grilled_bottom_2
-                    if (sx >= 0 and
-                            sy >= 0 and
-                            sx < len(self.tiles) and
-                            sy < len(self.tiles[0]) and
-                            self.tiles[sx][sy] == Tile.GRILL):
+                    if self.get_tile(sx, sy) == Tile.GRILL:
                         if newgb1:
                             burned = True
                             break
                         newgb1 = True
-                    if (sx >= 0 and
-                            sy >= 0 and
-                            sx + 1 < len(self.tiles) and
-                            sy < len(self.tiles[0]) and
-                            self.tiles[sx + 1][sy] == Tile.GRILL):
+                    if self.get_tile(sx + 1, sy) == Tile.GRILL:
                         if newgb2:
                             burned = True
                             break
@@ -417,20 +420,12 @@ class Level:
                         newgb2 = sausage.grilled_top_2
                         newgt1 = sausage.grilled_bottom_1
                         newgt2 = sausage.grilled_bottom_2
-                    if (sx >= 0 and
-                            sy >= 0 and
-                            sx < len(self.tiles) and
-                            sy < len(self.tiles[0]) and
-                            self.tiles[sx][sy] == Tile.GRILL):
+                    if self.get_tile(sx, sy) == Tile.GRILL:
                         if newgb1:
                             burned = True
                             break
                         newgb1 = True
-                    if (sx >= 0 and
-                            sy >= 0 and
-                            sx < len(self.tiles) and
-                            sy + 1 < len(self.tiles[0]) and
-                            self.tiles[sx][sy + 1] == Tile.GRILL):
+                    if self.get_tile(sx, sy + 1) == Tile.GRILL:
                         if newgb2:
                             burned = True
                             break
