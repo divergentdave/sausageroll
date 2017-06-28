@@ -119,7 +119,6 @@ class Level:
         )
 
     def is_winning(self, state):
-        # TODO: returning back to starting position/orientation
         for sausage_state in state.sausage_states:
             if (sausage_state.grilled_bottom_1 and
                     sausage_state.grilled_bottom_2 and
@@ -128,7 +127,7 @@ class Level:
                 continue
             else:
                 return False
-        return True
+        return state.player_state == self.initial_state.player_state
 
     def solve(self):
         def heuristic_cost_estimate(state):
