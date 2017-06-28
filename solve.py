@@ -137,13 +137,13 @@ class Level:
             return 100 * (4 * sausage_count - grilled_count)
 
         closed_set = set()
-        open_set = set((level.initial_state,))
+        open_set = set((self.initial_state,))
         step_lookup = {}
         g_score = collections.defaultdict(lambda: float("inf"))
-        g_score[level.initial_state] = 0
+        g_score[self.initial_state] = 0
         f_score = collections.defaultdict(lambda: float("inf"))
-        heuristic_initial_cost = heuristic_cost_estimate(level.initial_state)
-        f_score[level.initial_state] = heuristic_initial_cost
+        heuristic_initial_cost = heuristic_cost_estimate(self.initial_state)
+        f_score[self.initial_state] = heuristic_initial_cost
         while open_set:
             current = None
             current_score = float("inf")
