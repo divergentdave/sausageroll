@@ -380,6 +380,7 @@ class Level:
                                       sausage.pos[1] + 1), push[1]))
 
         burned = False
+        sunk = False
         new_sausages = [None for _ in state.sausage_states]
         for i, old_sausage in enumerate(state.sausage_states):
             if sausage_pushes[i] is None:
@@ -409,6 +410,10 @@ class Level:
                             burned = True
                             break
                         newgb2 = True
+                    if (self.get_tile(sx, sy) == Tile.WATER and
+                            self.get_tile(sx + 1, sy) == Tile.WATER):
+                        sunk = True
+                        break
                 else:  # vertical sausage orientation
                     if push[1][1] != 0:  # push lengthwise
                         newgb1 = sausage.grilled_bottom_1
@@ -430,6 +435,10 @@ class Level:
                             burned = True
                             break
                         newgb2 = True
+                    if (self.get_tile(sx, sy) == Tile.WATER and
+                            self.get_tile(sx, sy + 1) == Tile.WATER):
+                        sunk = True
+                        break
                 new_sausages[i] = SausageState(
                     old_sausage.orientation,
                     (
@@ -441,7 +450,7 @@ class Level:
                     newgt1,
                     newgt2
                 )
-        if not burned:
+        if not burned and not sunk:
             yield GameState(
                 PlayerState(next_pos, next_dir),
                 tuple(new_sausages)
