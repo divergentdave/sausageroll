@@ -457,7 +457,7 @@ class Level:
             )
 
 
-level = Level(
+BAYS_NECK = Level(
     "Bay's Neck",
     (4, 2),
     Direction.LEFT,
@@ -477,15 +477,57 @@ level = Level(
      )]
 )
 
+THE_CLOVER = Level(
+    "The Clover",
+    (1, 4),
+    Direction.RIGHT,
+    [[Tile.WATER, Tile.WATER, Tile.WATER, Tile.WATER, Tile.WATER, Tile.WATER, Tile.WATER, Tile.WATER, Tile.WATER],      # noqa
+     [Tile.WATER, Tile.WATER, Tile.WATER, Tile.WATER, Tile.LAND, Tile.WATER, Tile.WATER, Tile.WATER, Tile.WATER],       # noqa
+     [Tile.WATER, Tile.LAND, Tile.GRILL, Tile.GRILL, Tile.LAND, Tile.GRILL, Tile.GRILL, Tile.LAND, Tile.WATER],         # noqa
+     [Tile.WATER, Tile.LAND, Tile.GRILL, Tile.GRILL, Tile.LAND, Tile.GRILL, Tile.GRILL, Tile.LAND, Tile.WATER],         # noqa
+     [Tile.WATER, Tile.LAND, Tile.LAND, Tile.LAND, Tile.LAND, Tile.WATER, Tile.WATER, Tile.LAND, Tile.WATER],           # noqa
+     [Tile.WATER, Tile.WATER, Tile.WATER, Tile.LAND, Tile.GRILL, Tile.GRILL, Tile.WATER, Tile.LAND, Tile.WATER],        # noqa
+     [Tile.WATER, Tile.WATER, Tile.WATER, Tile.LAND, Tile.GRILL, Tile.GRILL, Tile.WATER, Tile.LAND, Tile.WATER],        # noqa
+     [Tile.WATER, Tile.WATER, Tile.WATER, Tile.LAND, Tile.LAND, Tile.LAND, Tile.LAND, Tile.LAND, Tile.WATER],           # noqa
+     [Tile.WATER, Tile.WATER, Tile.WATER, Tile.WATER, Tile.WATER, Tile.WATER, Tile.WATER, Tile.WATER, Tile.WATER]],     # noqa
+    [SausageState(
+        SausageOrientation.HORIZONTAL,
+        (2, 1),
+        False,
+        False,
+        False,
+        False
+     ),
+     SausageState(
+        SausageOrientation.VERTICAL,
+        (7, 4),
+        False,
+        False,
+        False,
+        False
+     ),
+     SausageState(
+        SausageOrientation.HORIZONTAL,
+        (2, 7),
+        False,
+        False,
+        False,
+        False
+     )]
+)
 
-def main():
+
+def main(level):
     print(level.draw_level())
     print(level.draw_state(level.initial_state))
-    import time
-    for step in level.solve():
-        print(level.draw_state(step))
-        time.sleep(0.5)
+    solution = level.solve()
+    if solution is not None:
+        import time
+        input()
+        for step in solution:
+            print(level.draw_state(step))
+            time.sleep(0.5)
 
 
 if __name__ == "__main__":
-    main()
+    main(THE_CLOVER)
